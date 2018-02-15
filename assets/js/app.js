@@ -38,11 +38,19 @@ function showPosition(position) {
       let uvIndex = actual.uvIndex;
       let windSpeed = actual.windSpeed;
 
-      // Datos para la semana:
-
-      $('.actual').append(`<span>${temperature}°</span>
+      $('.actual').append(`
+      <canvas id="iconActual" width="128" height="128"></canvas>
+      <span>${temperature}°</span>
         <span>${summary}</span>
       `);
+
+      // Agrega ícono actual:
+      const skycons = new Skycons({ 
+        'color': '#fff',
+        'resizeClear': true
+      });
+      skycons.add("iconActual", icon);
+      skycons.play();
     
     })
 }
