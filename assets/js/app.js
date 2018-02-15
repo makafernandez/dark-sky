@@ -17,8 +17,32 @@ function showPosition(position) {
                             <br>Longitud: ${longitude}`;
 
   // Retrieve weather forecast for location
-  let display = document.querySelector('.display');
+  let actual = document.querySelector('.actual');
 
   fetch(`https://api.darksky.net/forecast/ddd476a250882ec17bf7b60f9d91689e/${latitude},${longitude}?lang=es&units=auto`)
-    .then(function(response) {return response.json();}).then(function(data) {console.log(data);})
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      console.log(data);
+      const actual = data.currently;
+      const daily = data.daily;
+
+      // Datos actuales:
+      let icon = actual.icon;
+      let summary = actual.summary;
+      let temperature = actual.temperature;
+      let apparent = actual.apparentTemperature;
+      let precipProb = actual.precipProbability;
+      let humidity = actual.humidity;
+      let uvIndex = actual.uvIndex;
+      let windSpeed = actual.windSpeed;
+
+      // Datos para la semana:
+
+      $('.actual').append(`<span>${temperature}°</span>
+        <span>${summary}</span>
+      `);
+    
+    })
 }
