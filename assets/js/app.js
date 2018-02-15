@@ -19,6 +19,6 @@ function showPosition(position) {
   // Retrieve weather forecast for location
   let display = document.querySelector('.display');
 
-  fetch(`https://api.darksky.net/forecast/ddd476a250882ec17bf7b60f9d91689e/${latitude},${longitude}`)
+  fetch(`https://api.darksky.net/forecast/ddd476a250882ec17bf7b60f9d91689e/${latitude},${longitude}?lang=es&units=auto`)
     .then(function(response) {return response.json();}).then(function(data) {console.log(data);})
 }
