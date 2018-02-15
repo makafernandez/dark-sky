@@ -71,3 +71,11 @@ function showPosition(position) {
     
     })
 }
+
+// vistas 
+$("#locate").click(function(){
+  $("#initial").hide();
+});
+$("#locate").click(function(){
+  $(".actual").show();
+});

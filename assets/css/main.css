@@ -1,0 +1,9 @@
+.container {
+  border: 2px solid black;
+}
+#initial {
+  height: 100vh;
+}
+.ubicationSection {
+  margin: 10% auto;
+}
