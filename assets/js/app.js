@@ -170,16 +170,20 @@ $(document).ready(function() {
   
   let flickrAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
   $.getJSON(flickrAPI, {
-    tags: 'beach',
+    tags: ['beach'],
     tagmode: "any",
     format: "json"
   })  
   .done(function(data) {
     console.log(data);
     $.each(data.items, function(index, item) {
-      console.log(item);
-      $("<img>").attr("src", item.media.m).appendTo('.flickr');
-      $("img").addClass('myImg');
+      //console.log(item);
+      $('.flickr').css({
+        'background-image': `url(${item.media.m})`,
+        'background-size': 'cover',
+        'background-position': 'center'
+      });
+      $('.flickr').addClass('myImg');
       if (index == 0) {
         return false;
       }
