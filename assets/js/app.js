@@ -1,6 +1,18 @@
 'use strict';
 
-'use strict';
+$(document).ready(function() {
+  // Vistas 
+  $('#locate').click(function () {
+    $('#initial').hide();
+    $('#second').show();
+  });
+
+  $('#weekBtn').click(function () {
+    $('#initial').hide();
+    $('#second').hide();
+    $('#week').show();
+  });
+});
 
 // Geolocalización usuario
 $('#locate').click(function getLocation() {
@@ -108,7 +120,7 @@ function showPosition(position) {
                 </div>
               </div>  
             </div>
-            <p class="prediction lighten-4">Predicción de la semana</p>
+            <button id="weekBtn" class="prediction lighten-4 waves-effect waves-blue btn">PRONÓSTICO SEMANAL</button>
           </div>  
         </div>  
       </div>
@@ -123,8 +135,26 @@ function showPosition(position) {
       skycons.play();
 
       // PRONÓSTICO SEMANAL
-      //$('')daily.map
-      // Días de pronóstico
+      let weekForecast = daily.map(el => {
+        let dayWeek = convertUnixDate(el.time);
+        let minTempDay = el.temperatureMin;
+        let maxTempDay = el.temperatureMax;
+        let iconDay = el.icon;
+
+        // Genera contenido dinámico Week Forecast:
+        $('#days').append(`
+          <div class="col s2">
+            <canvas id="icon${dayWeek}" width="30" height="30"></canvas>
+          </div>
+          <div class="col s6">
+            ${dayWeek}
+          </div>
+          <div class="col s4">
+            ${minTempDay} - ${maxTempDay}
+          </div>
+        `);
+      });
+      /*/ Días de pronóstico
       let today = convertUnixDate(daily[0].time);
       let dayOne = convertUnixDate(daily[1].time);
       let dayTwo = convertUnixDate(daily[2].time);
@@ -132,28 +162,18 @@ function showPosition(position) {
       let dayFour = convertUnixDate(daily[4].time);
       let dayFive = convertUnixDate(daily[5].time);
       let daySix = convertUnixDate(daily[6].time);
-      let daySeven = convertUnixDate(daily[7].time);
+      let daySeven = convertUnixDate(daily[7].time); */
 
       function convertUnixDate(unix) {
         let timestamp = unix;
         let pubDate = new Date(timestamp * 1000);
-        const weekday = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
-        let formattedDate = weekday[pubDate.getDay()] + ' ' + pubDate.getDate();
+        const week = new Array("Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb");
+        let formattedDate = week[pubDate.getDay()] + ' ' + pubDate.getDate();
         return formattedDate;
       }
       
       // Pronóstico diario semana:
-      let iconWeek = daily.icon;
-      let summaryWeek = daily.summary;
-      let min
+      
 
     })
 }
-
-// vistas 
-$("#locate").click(function(){
-  $("#initial").hide();
-});
-$("#locate").click(function(){
-  $("#second").show();
-});
