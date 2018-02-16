@@ -50,15 +50,69 @@ function showPosition(position) {
       let windSpeed = actual.windSpeed; // velocidad del viento
 
       $('.actual').append(`
-        <span>${location}</span>
-        <canvas id="iconActual" width="128" height="128"></canvas>
-        <span>${temperature}°</span>
-        <span>${summary}</span>
-        <span>Temperatura ambiente ${apparent}°</span>
-        <span>Probabilidad de lluvia ${precipProb}%</span>
-        <span>Humedad ambiente ${humidity}%</span>
-        <span>Índice UV ${uvIndex}</span>
-        <span>Velocidad del viento${windSpeed}</span>
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m8 l6 offset-m2 offset-l3 center">  
+            <div class="row">  
+              <div class="col s12 center city">
+                ${location}
+              </div>
+              <div class="col s12">  
+                <canvas id="iconActual" width="128" height="128"></canvas>
+              </div>
+              <div class="col s12 center temperature">  
+                ${temperature} °
+              </div>
+              <div class="col s12 center summary">  
+                ${summary}
+              </div>
+            </div>
+            <div class="row">  
+              <div class="col s12">  
+                <div class="col s7 left-align detailWeather">
+                  Temperatura ambiente
+                </div>
+                <div class="col s5 rigth-align detailWeather">
+                  ${apparent} °C
+                </div>
+              </div>
+              <div class="col s12">  
+                <div class="col s7 left-align detailWeather">
+                  Probabilidad de lluvia
+                </div>
+                <div class="col s5 rigth-align detailWeather">
+                  ${precipProb} %
+                </div>
+              </div>
+              <div class="col s12">  
+                <div class="col s7 left-align detailWeather">
+                  Humedad ambiente 
+                </div>
+                <div class="col s5 rigth-align detailWeather">
+                  ${humidity} %
+                </div>
+              </div>
+              <div class="col s12">  
+                <div class="col s7 left-align detailWeather">
+                  Índice UV 
+                </div>
+                <div class="col s5 rigth-align detailWeather">
+                  ${uvIndex} 
+                </div>
+              </div>
+              <div class="col s12">  
+                <div class="col s7 left-align detailWeather">
+                  Velocidad del viento 
+                </div>
+                <div class="col s5 rigth-align detailWeather">
+                  ${windSpeed} 
+                </div>
+              </div>  
+            </div>
+            <p class="prediction lighten-4">Predicción de la semana</p>
+          </div>  
+        </div>  
+      </div>
       `);
 
       // Agrega ícono actual:
@@ -77,5 +131,5 @@ $("#locate").click(function(){
   $("#initial").hide();
 });
 $("#locate").click(function(){
-  $(".actual").show();
+  $("#second").show();
 });
