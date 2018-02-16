@@ -133,3 +133,31 @@ $("#locate").click(function(){
 $("#locate").click(function(){
   $("#second").show();
 });
+
+//Api Flickr
+
+//clave 3203c051377d5f52b0f08da0f8b66634
+//secreto 464f1233a0a7d944
+
+$( document ).ready(function() {
+  console.log( "ready!" );
+  
+  let flickrAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON(flickrAPI, {
+    tags: 'beach',
+    tagmode: "any",
+    format: "json"
+  }).done(function(data) {
+    console.log(data);
+    $.each(data.items, function(index, item) {
+      console.log(item);
+      $("<img>").attr("src", item.media.m).appendTo('.flickr');
+      $( "img" ).addClass('myImg');
+      if (index == 0) {
+        return false;
+      }
+    });
+  }).fail(function() {
+    alert('La llamada AJAX falló');
+  });
+});
