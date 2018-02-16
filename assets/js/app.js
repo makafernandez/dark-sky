@@ -149,16 +149,7 @@ function showPosition(position) {
           </div>  
         `);
       });
-      /*/ Días de pronóstico
-      let today = convertUnixDate(daily[0].time);
-      let dayOne = convertUnixDate(daily[1].time);
-      let dayTwo = convertUnixDate(daily[2].time);
-      let dayThree = convertUnixDate(daily[3].time);
-      let dayFour = convertUnixDate(daily[4].time);
-      let dayFive = convertUnixDate(daily[5].time);
-      let daySix = convertUnixDate(daily[6].time);
-      let daySeven = convertUnixDate(daily[7].time); */
-
+      
       function convertUnixDate(unix) {
         let timestamp = unix;
         let pubDate = new Date(timestamp * 1000);
