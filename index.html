@@ -10,10 +10,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 </head>
 <body>
-  <header>
-    <div class="container" id="initial">
+  <header id="initial" class="flickr">
+    <div class="container">
       <div class="col s12 m8 l6 center">
-        <h1 class="titleW">Info Wheather</h1>
+        <h1 class="titleW">Info Weather</h1>
         <i class="medium material-icons">brightness_5</i>
         <div class="ubicationSection"> 
           <p>Encuentra tu ubicación!</p>
@@ -23,22 +23,19 @@
       </div>
     </div>
   </header>
-  <div class="actual" id="second">
-
-  </div>
-  <section id="week">
+  <section id="second">
     <div class="container">
-      <div id="days" class="row">
-        <div class="col s2">
+      <div id="actual" class="row actual">
 
-        </div>
-        <div class="col s6">
-
-        </div>
-        <div class="col s4">
-
-        </div>
       </div>
+      <div>
+        <a id="weekBtn" class="lighten-4 waves-effect waves-blue btn">PRONÓSTICO SEMANAL</a>
+      </div>
+    </div>   
+  </section>
+  <section id="week">
+    <div id="days" class="container">
+      
     </div>
   </section>
   <!-- Scripts -->

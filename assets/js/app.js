@@ -1,12 +1,13 @@
 'use strict';
 
 $(document).ready(function() {
-  // Vistas 
+  // Vista Día
   $('#locate').click(function () {
     $('#initial').hide();
     $('#second').show();
+    $('#week').hide();
   });
-
+  // Vista Semana
   $('#weekBtn').click(function () {
     $('#initial').hide();
     $('#second').hide();
@@ -60,12 +61,10 @@ function showPosition(position) {
       let tempMin = parseInt(daily[0].temperatureMin);
 
       // Genera contenidos dinámicos vista Día Actual
-      $('.actual').append(`
-      <div class="container">
-        <div class="row">
-          <div class="col s12 m8 l6 offset-m2 offset-l3 center">  
-            <div class="row">  
-              <div class="col s12 center city">
+      $('#actual').append(`
+        <div class="col s12 m8 l6 offset-m2 offset-l3 center">  
+          <div class="row">  
+            <div class="col s12 center city">
                 ${location}
               </div>
               <div class="col s12">  
@@ -119,16 +118,14 @@ function showPosition(position) {
                   ${windSpeed} 
                 </div>
               </div>  
-            </div>
-            <button id="weekBtn" class="prediction lighten-4 waves-effect waves-blue btn">PRONÓSTICO SEMANAL</button>
+            </div>      
           </div>  
-        </div>  
-      </div>
+        </div>
       `);
 
       // Agrega ícono actual:
       const skycons = new Skycons({ 
-        'color': 'gray',
+        'color': 'rgba(255, 255, 255, 0.6)',
         'resizeClear': true
       });
       skycons.add('iconActual', icon);
@@ -143,27 +140,16 @@ function showPosition(position) {
 
         // Genera contenido dinámico Week Forecast:
         $('#days').append(`
-          <div class="col s2">
-            <canvas id="icon${dayWeek}" width="30" height="30"></canvas>
-          </div>
-          <div class="col s6">
-            ${dayWeek}
-          </div>
-          <div class="col s4">
-            ${minTempDay} - ${maxTempDay}
-          </div>
+          <div class="row">
+            <div class="col s2">
+              <canvas id="icon${dayWeek}" width="30" height="30"></canvas>
+            </div>
+            <div class="col s6">${dayWeek}</div>
+            <div class="col s4">${minTempDay} - ${maxTempDay}</div>
+          </div>  
         `);
       });
-      /*/ Días de pronóstico
-      let today = convertUnixDate(daily[0].time);
-      let dayOne = convertUnixDate(daily[1].time);
-      let dayTwo = convertUnixDate(daily[2].time);
-      let dayThree = convertUnixDate(daily[3].time);
-      let dayFour = convertUnixDate(daily[4].time);
-      let dayFive = convertUnixDate(daily[5].time);
-      let daySix = convertUnixDate(daily[6].time);
-      let daySeven = convertUnixDate(daily[7].time); */
-
+      
       function convertUnixDate(unix) {
         let timestamp = unix;
         let pubDate = new Date(timestamp * 1000);
@@ -171,9 +157,35 @@ function showPosition(position) {
         let formattedDate = week[pubDate.getDay()] + ' ' + pubDate.getDate();
         return formattedDate;
       }
-      
-      // Pronóstico diario semana:
-      
-
     })
 }
+
+//Api Flickr
+
+//clave 3203c051377d5f52b0f08da0f8b66634
+//secreto 464f1233a0a7d944
+
+$(document).ready(function() {
+  console.log( "ready!" );
+  
+  let flickrAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON(flickrAPI, {
+    tags: 'beach',
+    tagmode: "any",
+    format: "json"
+  })  
+  .done(function(data) {
+    console.log(data);
+    $.each(data.items, function(index, item) {
+      console.log(item);
+      $("<img>").attr("src", item.media.m).appendTo('.flickr');
+      $("img").addClass('myImg');
+      if (index == 0) {
+        return false;
+      }
+    });
+  })
+  .fail(function() {
+    alert('La llamada AJAX falló');
+  });
+});
