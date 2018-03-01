@@ -2,17 +2,52 @@
 
 $(document).ready(function() {
   // Vista Día
-  $('#locate').click(function () {
+  $('#locate').click(function() {
     $('#initial').hide();
     $('#second').show();
     $('#week').hide();
   });
+
+  $('#refresh').click(function() {
+    window.location.reload(true);
+  });
+  
   // Vista Semana
-  $('#weekBtn').click(function () {
+  $('#weekBtn').click(function() {
     $('#initial').hide();
     $('#second').hide();
     $('#week').show();
   });
+
+  $('#back').click(function() {
+    $('#initial').hide();
+    $('#second').show();
+    $('#week').hide();
+  });
+
+  // API UNSPLASH: 
+  $.ajax({
+    url: 'https://api.unsplash.com/photos/random',
+    datatype: 'json',
+    type: 'GET',
+    data: {
+      client_id: 'a6754a2085f644043bcc28c43a1258e2beec1ec487afc627e352d4585ed020e4',
+      query: 'summer, scenery'
+    }
+  })
+    .done(function(response) {
+      console.log(response);
+      console.log(response.links.html);
+      const data = response;
+      $('.unsplash').css('background-image', `url(${data.urls.regular})`);
+      $('.unsplash').addClass('photo');
+    })
+    .fail(function(error) {
+      console.log('error al cargar la api');
+      $('.unsplash').css({
+        'background-color': '#212121',
+      });
+    });
 });
 
 // Geolocalización usuario
@@ -34,9 +69,9 @@ function showPosition(position) {
     .then(function(response) {
       return response.json();
     })
-    .then(function (data3) {
+    .then(function(data3) {
       location = data3.results[0].address_components[0].short_name;
-    })  
+    });  
 
   // Genera el pronóstico para la ubicación del usuario:
   fetch(`https://api.darksky.net/forecast/ddd476a250882ec17bf7b60f9d91689e/${latitude},${longitude}?lang=es&units=auto`)
@@ -62,65 +97,60 @@ function showPosition(position) {
 
       // Genera contenidos dinámicos vista Día Actual
       $('#actual').append(`
-        <div class="col s12 m8 l6 offset-m2 offset-l3 center">  
-          <div class="row">  
-            <div class="col s12 center city">
-                ${location}
-              </div>
-              <div class="col s12">  
-                <canvas id="iconActual" width="128" height="128"></canvas>
-              </div>
-              <div class="col s12 center temperature">  
-                ${temperature} °
-              </div>
-              <div class="col s12 center summary">  
-                ${summary}
-              </div>
-            </div>
-            <div class="row">  
-              <div class="col s12">  
-                <div class="col s7 left-align detailWeather">
-                  Temperatura ambiente
-                </div>
-                <div class="col s5 rigth-align detailWeather">
-                  ${apparent} °C
-                </div>
-              </div>
-              <div class="col s12">  
-                <div class="col s7 left-align detailWeather">
-                  Probabilidad de lluvia
-                </div>
-                <div class="col s5 rigth-align detailWeather">
-                  ${precipProb} %
-                </div>
-              </div>
-              <div class="col s12">  
-                <div class="col s7 left-align detailWeather">
-                  Humedad ambiente 
-                </div>
-                <div class="col s5 rigth-align detailWeather">
-                  ${humidity} %
-                </div>
-              </div>
-              <div class="col s12">  
-                <div class="col s7 left-align detailWeather">
-                  Índice UV 
-                </div>
-                <div class="col s5 rigth-align detailWeather">
-                  ${uvIndex} 
-                </div>
-              </div>
-              <div class="col s12">  
-                <div class="col s7 left-align detailWeather">
-                  Velocidad del viento 
-                </div>
-                <div class="col s5 rigth-align detailWeather">
-                  ${windSpeed} 
-                </div>
-              </div>  
-            </div>      
-          </div>  
+        <div class="row">  
+          <div class="col s12 center">
+            <p class="city">${location}<p>
+          </div>
+          <div>  
+            <canvas id="iconActual" width="128" height="128"></canvas>
+          </div>
+          <div class="center temperature">  
+            <p>${temperature} °</p>
+          </div>
+          <div class="col s12 center summary">  
+            <p>${summary}</p>
+          </div>
         </div>
+        <div class="row">  
+          <div class="col s7 left-align detailWeather">
+            <p class="data">Temperatura ambiente</p>
+          </div>
+          <div class="col s5 rigth-align detailWeather">
+            <p class="data">${apparent} °C</p>
+          </div>
+        </div>
+        <div class="row">  
+          <div class="col s7 left-align detailWeather">
+            <p class="data">Probabilidad de lluvia</p>
+          </div>
+          <div class="col s5 rigth-align detailWeather">
+            <p class="data">${precipProb} %</p>
+          </div>
+        </div>
+        <div class="row">  
+          <div class="col s7 left-align detailWeather">
+            <p class="data">Humedad ambiente</p> 
+          </div>
+          <div class="col s5 rigth-align detailWeather">
+            <p class="data">${humidity} %</p>
+          </div>
+        </div>
+        <div class="row">  
+          <div class="col s7 left-align detailWeather">
+            <p class="data">Índice UV</p>
+          </div>
+          <div class="col s5 rigth-align detailWeather">
+            <p class="data">${uvIndex}</p>
+          </div>
+        </div>
+        <div class="row">  
+          <div class="col s7 left-align detailWeather">
+            <p class="data">Velocidad del viento</p> 
+          </div>
+          <div class="col s5 rigth-align detailWeather">
+            <p class="data">${windSpeed} km/hr</p>
+          </div>
+        </div>         
       `);
 
       // Agrega ícono actual:
@@ -134,62 +164,34 @@ function showPosition(position) {
       // PRONÓSTICO SEMANAL
       let weekForecast = daily.map(el => {
         let dayWeek = convertUnixDate(el.time);
-        let minTempDay = el.temperatureMin;
-        let maxTempDay = el.temperatureMax;
+        let minTempDay = parseInt(el.temperatureMin);
+        let maxTempDay = parseInt(el.temperatureMax);
         let iconDay = el.icon;
 
         // Genera contenido dinámico Week Forecast:
         $('#days').append(`
           <div class="row">
-            <div class="col s2">
-              <canvas id="icon${dayWeek}" width="30" height="30"></canvas>
-            </div>
-            <div class="col s6">${dayWeek}</div>
-            <div class="col s4">${minTempDay} - ${maxTempDay}</div>
+            <div class="col s6 left-align"><p class="data">${dayWeek}</p></div>
+            <div class="col s6 right-align"><p class="data">mín ${minTempDay}° - ${maxTempDay}° máx</p></div>
           </div>  
         `);
+
+        // Agrega ícono diario:
+        const skycons = new Skycons({
+          'color': 'rgba(255, 255, 255, 0.6)',
+          'resizeClear': false
+        });
+        skycons.add('iconWeek', `${iconDay}`);
+        skycons.play();
+
       });
       
       function convertUnixDate(unix) {
         let timestamp = unix;
         let pubDate = new Date(timestamp * 1000);
-        const week = new Array("Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb");
+        const week = new Array('Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb');
         let formattedDate = week[pubDate.getDay()] + ' ' + pubDate.getDate();
         return formattedDate;
       }
-    })
-}
-
-//Api Flickr
-
-//clave 3203c051377d5f52b0f08da0f8b66634
-//secreto 464f1233a0a7d944
-
-$(document).ready(function() {
-  console.log( "ready!" );
-  
-  let flickrAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-  $.getJSON(flickrAPI, {
-    tags: ['beach'],
-    tagmode: "any",
-    format: "json"
-  })  
-  .done(function(data) {
-    console.log(data);
-    $.each(data.items, function(index, item) {
-      //console.log(item);
-      $('.flickr').css({
-        'background-image': `url(${item.media.m})`,
-        'background-size': 'cover',
-        'background-position': 'center'
-      });
-      $('.flickr').addClass('myImg');
-      if (index == 0) {
-        return false;
-      }
     });
-  })
-  .fail(function() {
-    alert('La llamada AJAX falló');
-  });
-});
+}
